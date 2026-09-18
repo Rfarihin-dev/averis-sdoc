@@ -51,13 +51,11 @@
 <header class="sticky top-0 z-30 bg-white border-b border-zinc-200 shadow-sm">
   <div class="max-w-[1400px] mx-auto px-6 py-3.5 flex items-center justify-between">
     
-    <!-- Averis Authentic Brand Logo -->
+    <!-- Authentic Averis Wordmark with Brand Orange Swoosh -->
     <div class="flex items-center gap-3">
       <div class="flex items-center select-none cursor-pointer">
         <svg class="h-9 w-auto" viewBox="0 0 140 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Signature Averis Orange Swoosh Arc over 'a' -->
           <path d="M6.5 8 C13 3 23 4 28 8.5 C22.5 6.2 14.5 5.5 8 8 Z" fill="#F28C00"/>
-          <!-- Wordmark 'averis' -->
           <text x="3" y="30" font-family="'Inter', system-ui, sans-serif" font-size="29" font-weight="800" fill="#18181B" letter-spacing="-0.8">averis</text>
         </svg>
       </div>
@@ -68,14 +66,13 @@
       </div>
     </div>
 
-    <!-- Right Controls: Status + Solid Averis Orange Button -->
+    <!-- Live Status Chip + Averis Orange Pill Button -->
     <div class="flex items-center gap-3">
       <div id="liveStatusChip" class="hidden sm:flex items-center gap-1.5 text-[11.5px] text-zinc-500 mono px-3 py-1 rounded-full bg-zinc-50 border border-zinc-200">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 pulse-dot"></span>
         <span id="liveStatusText">syncing ledger…</span>
       </div>
 
-      <!-- Solid Averis Orange Pill Button -->
       <button id="openAuditModalBtn" class="pill-btn rounded-xl px-5 py-2.5 text-[12.5px] font-extrabold tracking-wide text-white bg-[#F28C00] hover:bg-[#d97c00] active:bg-[#c06d00] shadow-[0_4px_14px_rgba(242,140,0,0.38)] hover:shadow-[0_6px_18px_rgba(242,140,0,0.5)] transition-all flex items-center gap-2">
         <span class="text-base font-black leading-none">+</span>
         <span>AUDIT NEW DOCUMENT</span>
