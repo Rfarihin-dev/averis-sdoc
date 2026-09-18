@@ -6,162 +6,169 @@
 <title>Averis · Shipping Document Audit Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Open+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --font-heading: 'Montserrat', sans-serif;
-    --font-body: 'Open Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
   html, body {
     font-family: var(--font-body);
+    letter-spacing: -0.011em;
   }
   h1, h2, h3, h4, .font-heading, button, .brand-text {
     font-family: var(--font-heading);
+    letter-spacing: -0.02em;
   }
-  .mono { font-family: var(--font-mono); }
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
   
-  /* Latar belakang lembut gred korporat */
+  /* Latar belakang lembut korporat */
   body {
-    background: linear-gradient(to bottom, #FFE8D1 0%, #FFF5EB 18%, #FAFAFA 45%, #FFFFFF 100%);
+    background: linear-gradient(180deg, #FFF0E2 0%, #FFF8F2 20%, #F9FAFB 50%, #FFFFFF 100%);
     min-height: 100vh;
   }
 
-  /* Bucu khas Averis: atas-kiri & bawah-kanan bulat, atas-kanan & bawah-kiri tajam */
+  /* Bucu korporat Averis: 2 bucu melengkung, 2 bucu tajam */
   .averis-shape {
-    border-radius: 18px 0px 18px 0px;
+    border-radius: 16px 0px 16px 0px;
   }
   .averis-shape-sm {
-    border-radius: 10px 0px 10px 0px;
+    border-radius: 8px 0px 8px 0px;
   }
   .averis-shape-card {
-    border-radius: 20px 4px 20px 4px;
+    border-radius: 18px 4px 18px 4px;
   }
 
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar { width: 7px; height: 7px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #E4D5C7; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #CBB4A1; }
+  ::-webkit-scrollbar-thumb { background: #E5D5C5; border-radius: 6px; }
+  ::-webkit-scrollbar-thumb:hover { background: #D4BBA5; }
 
-  .drawer-panel { transition: transform .32s cubic-bezier(.16, 1, .3, 1); }
-  .drawer-overlay { transition: opacity .25s ease; }
+  .drawer-panel { transition: transform .3s cubic-bezier(.16, 1, .3, 1); }
+  .drawer-overlay { transition: opacity .2s ease; }
   .modal-panel { transition: transform .25s cubic-bezier(.16, 1, .3, 1), opacity .25s ease; }
   .fade-row { animation: rowIn .35s ease; }
   @keyframes rowIn { from { opacity: 0; transform: translateY(-4px); background-color: #FFF2E2; } to { opacity: 1; transform: translateY(0); } }
-  .kpi-num { font-feature-settings: "tnum"; }
 </style>
 </head>
 <body class="text-zinc-800 antialiased selection:bg-[#D97824]/20 selection:text-[#D97824]">
 
 <!-- ===================== HEADER ===================== -->
-<header class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-zinc-200 shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
-  <div class="max-w-[1440px] mx-auto px-6 py-3.5 flex items-center justify-between">
+<header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-zinc-200 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+  <div class="max-w-[1440px] mx-auto px-6 py-3 flex items-center justify-between">
     
-    <!-- Logo Rasmi Averis Mengikut Visual Rujukan -->
-    <div class="flex items-center gap-4">
+    <!-- Logo Rasmi Averis Vektor Halus -->
+    <div class="flex items-center gap-3.5">
       <div class="flex items-center gap-2 select-none">
-        <span class="text-zinc-900 font-extrabold text-[21px] italic tracking-tight font-heading">We are</span>
-        <svg class="h-8 w-auto" viewBox="0 0 132 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Lengkungan Daun Oren Khas Averis -->
-          <path d="M5.5 8 C12 3.2 21 4.2 26 8.5 C20.8 6.5 13.2 5.8 7 8.2 Z" fill="#D97824"/>
-          <!-- Teks 'averis' Huruf Kecil Montserrat Bold -->
-          <text x="2" y="28" font-family="'Montserrat', sans-serif" font-size="28" font-weight="800" fill="#18181B" letter-spacing="-0.5">averis</text>
-        </svg>
+        <span class="text-zinc-950 font-bold text-[19px] italic tracking-tight font-heading">We are</span>
+        <div class="relative flex items-center">
+          <svg class="absolute -top-1 left-0 w-6 h-3" viewBox="0 0 24 10" fill="none">
+            <path d="M2 9 C8 3 16 3 22 8 C16 5 8 5 3 9 Z" fill="#D97824"/>
+          </svg>
+          <span class="text-zinc-950 font-extrabold text-[24px] tracking-tight font-heading lowercase pl-0.5">averis</span>
+        </div>
       </div>
-      <div class="hidden md:block h-5 w-px bg-zinc-200"></div>
+      <div class="hidden md:block h-4 w-px bg-zinc-300"></div>
       <div class="hidden md:block leading-tight">
-        <div class="text-[11.5px] font-bold text-zinc-700 font-heading">Global Business Services · Shipping Doc Audit</div>
-        <div class="text-[10px] text-zinc-500 italic">The leading Global Business Services and Solutions provider</div>
+        <div class="text-[12px] font-bold text-zinc-700 font-heading">Global Business Services · Shipping Doc Audit</div>
+        <div class="text-[11px] text-zinc-500">Autonomous Trade Document Verification Platform</div>
       </div>
     </div>
 
-    <!-- Butang Tindakan Khas Bucu Averis -->
+    <!-- Right Controls -->
     <div class="flex items-center gap-3">
-      <div id="liveStatusChip" class="hidden sm:flex items-center gap-1.5 text-[11.5px] text-zinc-600 mono px-3 py-1 bg-zinc-50 border border-zinc-200 averis-shape-sm">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span id="liveStatusText">PostgreSQL Ledger Active</span>
+      <div id="liveStatusChip" class="hidden sm:flex items-center gap-2 text-xs font-medium text-zinc-600 px-3 py-1.5 bg-zinc-50 border border-zinc-200 averis-shape-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span id="liveStatusText">PostgreSQL Connected</span>
       </div>
 
-      <button id="openAuditModalBtn" class="averis-shape px-5 py-2.5 text-[12.5px] font-bold text-white bg-[#D97824] hover:bg-[#c4681b] active:bg-[#b05b14] shadow-[0_3px_12px_rgba(217,120,36,0.35)] hover:shadow-[0_4px_16px_rgba(217,120,36,0.45)] transition-all flex items-center gap-2 cursor-pointer">
+      <button id="openAuditModalBtn" class="averis-shape px-5 py-2.5 text-xs font-bold text-white bg-[#D97824] hover:bg-[#c4681b] active:bg-[#b05b14] shadow-[0_3px_12px_rgba(217,120,36,0.3)] transition-all flex items-center gap-2 cursor-pointer font-heading tracking-wide">
         <span class="text-base font-extrabold leading-none">+</span>
-        <span class="tracking-wide">AUDIT NEW DOCUMENT</span>
+        <span>AUDIT NEW DOCUMENT</span>
       </button>
     </div>
   </div>
 </header>
 
-<!-- ===================== KANDUNGAN UTAMA ===================== -->
+<!-- ===================== MAIN CONTENT ===================== -->
 <main class="max-w-[1440px] mx-auto px-6 pt-7 pb-20">
 
-  <!-- KPI METRICS STRIP -->
+  <!-- KPI STRIP -->
   <section class="grid grid-cols-2 lg:grid-cols-5 gap-3.5 mb-7">
-    <div class="bg-white/95 border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-sm">
-      <div class="text-[11.5px] font-semibold text-zinc-500 uppercase tracking-wider font-heading">Audited Records</div>
-      <div id="kpiTotal" class="kpi-num text-3xl font-extrabold text-zinc-900 mt-1 mono">0</div>
-      <div class="text-[11px] text-zinc-500 mt-1">100% evaluated payload</div>
+    <div class="bg-white border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+      <div class="text-xs font-bold text-zinc-500 uppercase tracking-wider font-heading">Audited Records</div>
+      <div id="kpiTotal" class="tabular-nums text-3xl font-extrabold text-zinc-950 mt-1 font-heading">0</div>
+      <div class="text-xs text-zinc-500 mt-1 font-medium">100% evaluated payload</div>
     </div>
-    <div class="bg-white/95 border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-sm">
-      <div class="text-[11.5px] font-semibold text-emerald-700 uppercase tracking-wider font-heading">Compliant (OK)</div>
-      <div id="kpiCleared" class="kpi-num text-3xl font-extrabold text-emerald-600 mt-1 mono">0</div>
-      <div id="kpiClearedPct" class="text-[11px] text-zinc-500 mt-1">clean reconciliation</div>
+    <div class="bg-white border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+      <div class="text-xs font-bold text-emerald-700 uppercase tracking-wider font-heading">Compliant (OK)</div>
+      <div id="kpiCleared" class="tabular-nums text-3xl font-extrabold text-emerald-600 mt-1 font-heading">0</div>
+      <div id="kpiClearedPct" class="text-xs text-zinc-500 mt-1 font-medium">clean reconciliation</div>
     </div>
-    <div class="bg-white/95 border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-sm">
-      <div class="text-[11.5px] font-semibold text-rose-700 uppercase tracking-wider font-heading">Discrepancies</div>
-      <div id="kpiMismatch" class="kpi-num text-3xl font-extrabold text-rose-600 mt-1 mono">0</div>
-      <div class="text-[11px] text-zinc-500 mt-1">7-field variance isolated</div>
+    <div class="bg-white border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+      <div class="text-xs font-bold text-rose-700 uppercase tracking-wider font-heading">Discrepancies</div>
+      <div id="kpiMismatch" class="tabular-nums text-3xl font-extrabold text-rose-600 mt-1 font-heading">0</div>
+      <div class="text-xs text-zinc-500 mt-1 font-medium">7-field variance isolated</div>
     </div>
-    <div class="bg-white/95 border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-sm">
-      <div class="text-[11.5px] font-semibold text-amber-700 uppercase tracking-wider font-heading">Manual Escalations</div>
-      <div id="kpiEscalated" class="kpi-num text-3xl font-extrabold text-amber-600 mt-1 mono">0</div>
-      <div class="text-[11px] text-zinc-500 mt-1">scan / doc exceptions</div>
+    <div class="bg-white border border-zinc-200/90 averis-shape-card px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+      <div class="text-xs font-bold text-amber-700 uppercase tracking-wider font-heading">Escalations</div>
+      <div id="kpiEscalated" class="tabular-nums text-3xl font-extrabold text-amber-600 mt-1 font-heading">0</div>
+      <div class="text-xs text-zinc-500 mt-1 font-medium">scan / format exceptions</div>
     </div>
-    <div class="col-span-2 lg:col-span-1 bg-zinc-900 averis-shape-card px-5 py-4 shadow-sm">
-      <div class="text-[11.5px] font-semibold text-zinc-400 uppercase tracking-wider font-heading">Audit Benchmark</div>
-      <div class="kpi-num text-3xl font-extrabold text-white mt-1 mono">1.0000</div>
-      <div class="text-[11px] text-emerald-400 mt-1 mono">score_cli.py verified</div>
+    <div class="col-span-2 lg:col-span-1 bg-zinc-900 averis-shape-card px-5 py-4 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+      <div class="text-xs font-bold text-zinc-400 uppercase tracking-wider font-heading">Audit Benchmark</div>
+      <div class="tabular-nums text-3xl font-extrabold text-white mt-1 font-heading">1.0000</div>
+      <div class="text-xs text-emerald-400 mt-1 font-medium">score_cli.py verified</div>
     </div>
   </section>
 
-  <!-- TELEMETRI CARTA -->
+  <!-- TELEMETRY CHARTS -->
   <section class="grid grid-cols-1 lg:grid-cols-5 gap-4 mb-7">
-    <div class="lg:col-span-2 bg-white border border-zinc-200/90 averis-shape-card p-5 shadow-sm">
+    <div class="lg:col-span-2 bg-white border border-zinc-200/90 averis-shape-card p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
       <div class="flex items-center justify-between mb-2">
-        <h3 class="text-[13px] font-bold text-zinc-800 font-heading">Trade Intent Classification</h3>
-        <span class="text-[11px] mono text-zinc-500">n=520</span>
+        <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider font-heading">Trade Intent Classification</h3>
+        <span class="text-xs font-semibold text-zinc-500 tabular-nums">n=520</span>
       </div>
       <div class="h-[210px] mt-1"><canvas id="categoryChart"></canvas></div>
     </div>
-    <div class="lg:col-span-3 bg-white border border-zinc-200/90 averis-shape-card p-5 shadow-sm">
+    <div class="lg:col-span-3 bg-white border border-zinc-200/90 averis-shape-card p-5 shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
       <div class="flex items-center justify-between mb-2">
-        <h3 class="text-[13px] font-bold text-zinc-800 font-heading">Audit Status Breakdown</h3>
-        <span class="text-[11px] text-zinc-500">SI vs B/L validation outcomes</span>
+        <h3 class="text-xs font-bold text-zinc-900 uppercase tracking-wider font-heading">Verification Status Breakdown</h3>
+        <span class="text-xs text-zinc-500">SI vs B/L validation outcomes</span>
       </div>
       <div class="h-[210px] mt-1"><canvas id="statusChart"></canvas></div>
     </div>
   </section>
 
-  <!-- BAR PENAPIS & CARIAN -->
+  <!-- FILTER & SEARCH BAR -->
   <section class="flex flex-wrap items-center gap-3 mb-4">
     <div id="filterPills" class="flex items-center gap-1.5 bg-white border border-zinc-200 p-1 averis-shape-sm shadow-sm"></div>
     <div class="relative flex-1 min-w-[240px] max-w-[340px]">
       <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 text-xs"></i>
       <input id="searchInput" type="text" placeholder="Filter by Record ID..."
-        class="w-full pl-9 pr-3 py-2 border border-zinc-200 bg-white text-xs placeholder:text-zinc-400 focus:border-[#D97824] focus:outline-none averis-shape-sm shadow-sm font-mono">
+        class="w-full pl-9 pr-3 py-2 border border-zinc-200 bg-white text-xs placeholder:text-zinc-400 focus:border-[#D97824] focus:outline-none averis-shape-sm shadow-sm font-medium">
     </div>
-    <div id="resultCount" class="text-xs text-zinc-500 mono ml-auto"></div>
+    <div id="resultCount" class="text-xs font-semibold text-zinc-500 tabular-nums ml-auto"></div>
   </section>
 
-  <!-- JADUAL LOG OPERASI -->
-  <section class="bg-white border border-zinc-200 averis-shape-card shadow-sm overflow-hidden">
+  <!-- AUDIT LOG TABLE -->
+  <section class="bg-white border border-zinc-200 averis-shape-card shadow-[0_1px_3px_rgba(0,0,0,0.03)] overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full text-left text-xs">
         <thead>
-          <tr class="border-b border-zinc-200 bg-zinc-50/80 text-zinc-600 text-[11px] font-semibold uppercase tracking-wider font-heading">
-            <th class="px-5 py-3 mono">Record ID</th>
+          <tr class="border-b border-zinc-200 bg-zinc-50/80 text-zinc-600 text-[11px] font-bold uppercase tracking-wider font-heading">
+            <th class="px-5 py-3">Record ID</th>
             <th class="px-5 py-3">Inbound Stream Intent</th>
             <th class="px-5 py-3">Verification Status</th>
             <th class="px-5 py-3">Identified Discrepancy / Trigger</th>
@@ -176,32 +183,32 @@
       <p class="text-xs text-zinc-500 mt-2 font-medium">No matching audit records found.</p>
     </div>
     <div class="flex items-center justify-between px-5 py-3 border-t border-zinc-200 bg-zinc-50/60">
-      <span id="pageInfo" class="text-xs text-zinc-500 mono"></span>
+      <span id="pageInfo" class="text-xs text-zinc-500 font-medium"></span>
       <div class="flex items-center gap-1.5">
-        <button id="prevPageBtn" class="w-8 h-8 rounded border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-100 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-mono">&lt;</button>
-        <button id="nextPageBtn" class="w-8 h-8 rounded border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-100 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-mono">&gt;</button>
+        <button id="prevPageBtn" class="w-8 h-8 rounded border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-100 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold cursor-pointer">&lt;</button>
+        <button id="nextPageBtn" class="w-8 h-8 rounded border border-zinc-200 bg-white text-zinc-600 hover:bg-zinc-100 disabled:opacity-30 disabled:cursor-not-allowed text-xs font-bold cursor-pointer">&gt;</button>
       </div>
     </div>
   </section>
 </main>
 
-<!-- ===================== LACI SEMAKAN (RECONCILIATION DRAWER) ===================== -->
+<!-- ===================== RECONCILIATION DRAWER ===================== -->
 <div id="drawerOverlay" class="drawer-overlay fixed inset-0 bg-zinc-950/40 opacity-0 pointer-events-none z-40"></div>
 <aside id="drawerPanel" class="drawer-panel fixed top-0 right-0 h-full w-full sm:w-[540px] bg-white z-50 translate-x-full shadow-2xl flex flex-col border-l border-zinc-200">
   <div class="flex items-start justify-between px-6 py-5 border-b border-zinc-200 bg-zinc-50/50">
     <div>
       <div class="text-[11px] font-bold text-[#D97824] uppercase tracking-wider font-heading">Reconciliation Audit Trail</div>
-      <div id="drawerRecordId" class="text-[17px] font-extrabold text-zinc-900 mono mt-0.5">—</div>
+      <div id="drawerRecordId" class="text-lg font-extrabold text-zinc-950 mt-0.5 font-heading">—</div>
     </div>
-    <button id="closeDrawerBtn" class="w-8 h-8 rounded-lg hover:bg-zinc-200/80 flex items-center justify-center text-zinc-500">
+    <button id="closeDrawerBtn" class="w-8 h-8 rounded-lg hover:bg-zinc-200/80 flex items-center justify-center text-zinc-500 cursor-pointer">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
 
   <div class="flex-1 overflow-y-auto px-6 py-5">
     <div class="flex items-center gap-2 mb-5">
-      <span id="drawerStatusPill" class="text-[11px] font-bold px-3 py-1 averis-shape-sm font-heading"></span>
-      <span id="drawerCategoryPill" class="text-[11px] font-semibold px-3 py-1 averis-shape-sm bg-zinc-100 text-zinc-700 font-heading"></span>
+      <span id="drawerStatusPill" class="text-xs font-bold px-3 py-1 averis-shape-sm font-heading"></span>
+      <span id="drawerCategoryPill" class="text-xs font-semibold px-3 py-1 averis-shape-sm bg-zinc-100 text-zinc-700 font-heading"></span>
     </div>
 
     <div id="escalationBox" class="hidden mb-5 rounded-lg border border-amber-300 bg-amber-50/80 px-4 py-3">
@@ -209,15 +216,15 @@
         <i class="fa-solid fa-circle-exclamation text-amber-600 mt-0.5"></i>
         <div>
           <div class="text-xs font-bold text-amber-800 font-heading">Manual Verification Flag</div>
-          <div id="escalationReason" class="text-xs text-amber-900/90 mt-0.5 leading-relaxed font-mono"></div>
+          <div id="escalationReason" class="text-xs text-amber-900 mt-0.5 leading-relaxed font-medium"></div>
         </div>
       </div>
     </div>
 
-    <div class="border border-zinc-200 rounded-lg overflow-hidden">
+    <div class="border border-zinc-200 rounded-lg overflow-hidden shadow-sm">
       <table class="w-full text-xs">
         <thead>
-          <tr class="bg-zinc-50 text-zinc-600 text-[10.5px] font-bold uppercase tracking-wider border-b border-zinc-200 font-heading">
+          <tr class="bg-zinc-50 text-zinc-600 text-[11px] font-bold uppercase tracking-wider border-b border-zinc-200 font-heading">
             <th class="px-3.5 py-2.5 text-left">Trade Field</th>
             <th class="px-3.5 py-2.5 text-left">Shipping Instruction (SI)</th>
             <th class="px-3.5 py-2.5 text-left">Bill of Lading (BL)</th>
@@ -231,67 +238,64 @@
   </div>
 </aside>
 
-<!-- ===================== MODAL SIMULASI AUDIT DOKUMEN ===================== -->
+<!-- ===================== AUDIT SIMULATION MODAL ===================== -->
 <div id="modalOverlay" class="fixed inset-0 bg-zinc-950/50 opacity-0 pointer-events-none z-40 transition-opacity duration-200"></div>
 <div id="modalWrapper" class="fixed inset-0 z-50 flex items-center justify-center px-4 pointer-events-none">
   <div id="modalPanel" class="modal-panel bg-white averis-shape-card shadow-2xl w-full max-w-[560px] opacity-0 scale-95 border border-zinc-200 overflow-hidden">
     
     <div class="flex items-center justify-between px-6 py-4.5 border-b border-zinc-200 bg-zinc-50/50">
       <div>
-        <div class="text-base font-bold text-zinc-900 font-heading">Document Intake & Audit Sandbox</div>
+        <div class="text-sm font-bold text-zinc-900 font-heading">Document Intake & Audit Sandbox</div>
         <div class="text-xs text-zinc-500">Automated cross-validation between SI and Bill of Lading</div>
       </div>
-      <button id="closeModalBtn" class="w-8 h-8 rounded-lg hover:bg-zinc-200 flex items-center justify-center text-zinc-500">
+      <button id="closeModalBtn" class="w-8 h-8 rounded-lg hover:bg-zinc-200 flex items-center justify-center text-zinc-500 cursor-pointer">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <!-- Pemilihan Senario Ujian -->
     <div id="scenarioStep" class="px-6 py-5">
       <div class="text-[11px] font-bold text-zinc-500 uppercase tracking-wider mb-3 font-heading">SELECT TEST CASE SCENARIO</div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         <button data-scenario="A" class="scenario-btn text-left averis-shape-card border border-zinc-200 hover:border-[#D97824] hover:bg-[#FFF8F2] px-4 py-3 transition-colors cursor-pointer">
           <div class="text-xs font-bold text-zinc-800 font-heading"><i class="fa-solid fa-scale-unbalanced text-[#D97824] mr-1.5"></i>Gross Weight Discrepancy</div>
-          <div class="text-[11px] text-zinc-500 mt-1 mono">SI: 24,500 KG vs BL: 22,100 KG</div>
+          <div class="text-xs text-zinc-500 mt-1 font-medium">SI: 24,500 KG vs BL: 22,100 KG</div>
         </button>
         <button data-scenario="B" class="scenario-btn text-left averis-shape-card border border-zinc-200 hover:border-[#D97824] hover:bg-[#FFF8F2] px-4 py-3 transition-colors cursor-pointer">
           <div class="text-xs font-bold text-zinc-800 font-heading"><i class="fa-solid fa-ship text-[#D97824] mr-1.5"></i>Port Discharge Mismatch</div>
-          <div class="text-[11px] text-zinc-500 mt-1 mono">MYPKG vs MYPGU</div>
+          <div class="text-xs text-zinc-500 mt-1 font-medium">MYPKG vs MYPGU</div>
         </button>
         <button data-scenario="C" class="scenario-btn text-left averis-shape-card border border-zinc-200 hover:border-emerald-500 hover:bg-emerald-50/50 px-4 py-3 transition-colors cursor-pointer">
           <div class="text-xs font-bold text-zinc-800 font-heading"><i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i>Full Compliance Approval</div>
-          <div class="text-[11px] text-zinc-500 mt-1 mono">100% matched across 7 fields</div>
+          <div class="text-xs text-zinc-500 mt-1 font-medium">100% matched across 7 fields</div>
         </button>
         <button data-scenario="D" class="scenario-btn text-left averis-shape-card border border-zinc-200 hover:border-amber-500 hover:bg-amber-50/50 px-4 py-3 transition-colors cursor-pointer">
           <div class="text-xs font-bold text-zinc-800 font-heading"><i class="fa-solid fa-file-circle-exclamation text-amber-600 mr-1.5"></i>Legibility Exception</div>
-          <div class="text-[11px] text-zinc-500 mt-1 mono">Low scan resolution &lt; 40%</div>
+          <div class="text-xs text-zinc-500 mt-1 font-medium">Low scan resolution &lt; 40%</div>
         </button>
       </div>
     </div>
 
-    <!-- Animasi Proses Monokrom Moden (Menggantikan Terminal Hijau-Hitam) -->
     <div id="processingStep" class="hidden px-6 py-6">
       <div class="flex items-center gap-3 mb-5">
-        <div class="w-7 h-7 border-2 border-[#D97824] border-t-transparent rounded-full animate-spin"></div>
+        <div class="w-6 h-6 border-2 border-[#D97824] border-t-transparent rounded-full animate-spin"></div>
         <div>
-          <div class="text-xs font-bold text-zinc-800 font-heading">Executing Automated Verification Pipeline</div>
-          <div class="text-[11px] text-zinc-500 font-mono">Singapore Region (ap-southeast-1)</div>
+          <div class="text-xs font-bold text-zinc-900 font-heading">Executing Automated Verification Pipeline</div>
+          <div class="text-[11px] text-zinc-500">Singapore Region (ap-southeast-1)</div>
         </div>
       </div>
 
-      <!-- Kad Langkah Pemeriksaan -->
-      <div class="space-y-2.5 bg-zinc-50 border border-zinc-200 p-3.5 averis-shape-sm text-xs font-mono">
+      <div class="space-y-2.5 bg-zinc-50 border border-zinc-200 p-3.5 averis-shape-sm text-xs font-medium">
         <div id="procStep1" class="flex items-center justify-between text-zinc-700">
           <span>1. Ingesting MIME payload & attachments</span>
           <span id="stepIcon1"><i class="fa-solid fa-spinner fa-spin text-zinc-400"></i></span>
         </div>
         <div id="procStep2" class="flex items-center justify-between text-zinc-400">
-          <span>2. Normalizing logistic units (MT &gt; KG)</span>
-          <span id="stepIcon2"><i class="fa-solid fa-circle text-[8px] text-zinc-300"></i></span>
+          <span>2. Normalizing logistic units (MT to KG)</span>
+          <span id="stepIcon2"><i class="fa-solid fa-circle text-[7px] text-zinc-300"></i></span>
         </div>
         <div id="procStep3" class="flex items-center justify-between text-zinc-400">
           <span>3. Cross-verifying 7 mandatory fields</span>
-          <span id="stepIcon3"><i class="fa-solid fa-circle text-[8px] text-zinc-300"></i></span>
+          <span id="stepIcon3"><i class="fa-solid fa-circle text-[7px] text-zinc-300"></i></span>
         </div>
       </div>
     </div>
@@ -516,7 +520,7 @@
       options:{
         maintainAspectRatio:false,
         cutout:"66%",
-        plugins:{ legend:{ position:"bottom", labels:{ boxWidth:10, boxHeight:10, font:{size:11, family:"Montserrat"}, color:"#52525B", padding:12 } } }
+        plugins:{ legend:{ position:"bottom", labels:{ boxWidth:10, boxHeight:10, font:{size:11, family:"Montserrat", weight:600}, color:"#52525B", padding:12 } } }
       }
     });
 
@@ -541,7 +545,7 @@
         maintainAspectRatio:false,
         plugins:{ legend:{ display:false } },
         scales:{
-          x:{ grid:{ color:"#F4F4F5" }, ticks:{ font:{size:10.5, family:"JetBrains Mono"}, color:"#71717A" } },
+          x:{ grid:{ color:"#F4F4F5" }, ticks:{ font:{size:11, family:"Inter"}, color:"#71717A" } },
           y:{ grid:{ display:false }, ticks:{ font:{size:11.5, family:"Montserrat", weight:600}, color:"#3F3F46" } }
         }
       }
@@ -562,8 +566,8 @@
     const wrap = document.getElementById("filterPills");
     wrap.innerHTML = pills.map(p=>{
       const active = activeFilter === p.key;
-      return `<button data-filter="${p.key}" class="filter-pill averis-shape-sm text-xs font-semibold px-3 py-1.5 transition-colors cursor-pointer ${active ? 'bg-[#D97824] text-white' : 'text-zinc-600 hover:bg-zinc-100'}">
-        ${p.label}: <span class="mono">${p.count}</span>
+      return `<button data-filter="${p.key}" class="filter-pill averis-shape-sm text-xs font-bold px-3.5 py-1.5 transition-colors cursor-pointer font-heading ${active ? 'bg-[#D97824] text-white' : 'text-zinc-600 hover:bg-zinc-100'}">
+        ${p.label}: <span class="tabular-nums font-semibold">${p.count}</span>
       </button>`;
     }).join("");
     wrap.querySelectorAll(".filter-pill").forEach(btn=>{
@@ -613,12 +617,12 @@
       tbody.innerHTML = pageItems.map(r=>{
         const meta = STATUS_META[r.status];
         return `<tr class="hover:bg-zinc-50 cursor-pointer transition-colors" data-id="${r.email_id}">
-          <td class="px-5 py-3 mono text-xs font-semibold text-zinc-900">${r.email_id}</td>
-          <td class="px-5 py-3 text-xs text-zinc-600">${r.category.replaceAll('_',' ')}</td>
-          <td class="px-5 py-3"><span class="text-[10px] font-bold px-2.5 py-0.5 averis-shape-sm ${meta.pill}">${meta.label}</span></td>
-          <td class="px-5 py-3 text-xs text-zinc-500 max-w-[280px] truncate font-mono">${triggerReasonText(r)}</td>
+          <td class="px-5 py-3 text-xs font-bold text-zinc-900 tabular-nums">${r.email_id}</td>
+          <td class="px-5 py-3 text-xs text-zinc-600 font-medium">${r.category.replaceAll('_',' ')}</td>
+          <td class="px-5 py-3"><span class="text-[10.5px] font-bold px-2.5 py-0.5 averis-shape-sm ${meta.pill}">${meta.label}</span></td>
+          <td class="px-5 py-3 text-xs text-zinc-600 max-w-[280px] truncate font-medium">${triggerReasonText(r)}</td>
           <td class="px-5 py-3 text-right">
-            <button data-inspect="${r.email_id}" class="text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 px-2.5 py-1 rounded border border-zinc-200 hover:border-zinc-300">
+            <button data-inspect="${r.email_id}" class="text-xs font-semibold text-zinc-600 hover:text-zinc-950 px-2.5 py-1 rounded border border-zinc-200 hover:border-zinc-300 cursor-pointer">
               Inspect <i class="fa-solid fa-chevron-right text-[8px] ml-1"></i>
             </button>
           </td>
@@ -661,7 +665,7 @@
     document.getElementById("drawerRecordId").textContent = r.email_id;
     const statusPill = document.getElementById("drawerStatusPill");
     statusPill.textContent = meta.label;
-    statusPill.className = "text-[11px] font-bold px-3 py-1 averis-shape-sm " + meta.pill;
+    statusPill.className = "text-xs font-bold px-3 py-1 averis-shape-sm " + meta.pill;
     document.getElementById("drawerCategoryPill").textContent = r.category.replaceAll('_',' ');
 
     const escBox = document.getElementById("escalationBox");
@@ -678,9 +682,9 @@
       const isMismatch = mismatchedKeys.has(key);
       const rowClass = isMismatch ? "bg-rose-50/70" : "";
       return `<tr class="${rowClass}">
-        <td class="px-3.5 py-2.5 font-medium text-zinc-600">${FIELD_LABELS[key]}</td>
-        <td class="px-3.5 py-2.5 ${isMismatch ? 'text-rose-700 font-semibold' : 'text-zinc-700'}">${fieldDisplay(key, r.si[key])}</td>
-        <td class="px-3.5 py-2.5 ${isMismatch ? 'text-rose-700 font-semibold' : 'text-zinc-700'}">${fieldDisplay(key, r.bl[key])}${isMismatch ? ' <i class="fa-solid fa-triangle-exclamation text-rose-500 text-[10px] ml-1"></i>' : ''}</td>
+        <td class="px-3.5 py-2.5 font-semibold text-zinc-600">${FIELD_LABELS[key]}</td>
+        <td class="px-3.5 py-2.5 ${isMismatch ? 'text-rose-700 font-bold' : 'text-zinc-700'}">${fieldDisplay(key, r.si[key])}</td>
+        <td class="px-3.5 py-2.5 ${isMismatch ? 'text-rose-700 font-bold' : 'text-zinc-700'}">${fieldDisplay(key, r.bl[key])}${isMismatch ? ' <i class="fa-solid fa-triangle-exclamation text-rose-500 text-[10px] ml-1"></i>' : ''}</td>
       </tr>`;
     }).join("");
 
@@ -688,16 +692,16 @@
     if(r.defect_fields.length){
       deltaWrap.innerHTML = r.defect_fields.map(d=>{
         if(d.delta !== null){
-          return `<div class="text-xs mono text-rose-700 bg-rose-50 border border-rose-200 averis-shape-sm px-3 py-2">
-            SI: ${fieldDisplay(d.field, d.si)} vs BL: ${fieldDisplay(d.field, d.bl)} | Δ ${d.delta>0?'+':''}${d.delta.toLocaleString()} VARIANCE
+          return `<div class="text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 averis-shape-sm px-3 py-2">
+            SI: ${fieldDisplay(d.field, d.si)} vs BL: ${fieldDisplay(d.field, d.bl)} | Variance: ${d.delta>0?'+':''}${d.delta.toLocaleString()} KG
           </div>`;
         }
-        return `<div class="text-xs mono text-rose-700 bg-rose-50 border border-rose-200 averis-shape-sm px-3 py-2">
-          ${FIELD_LABELS[d.field]} mismatch: "${d.si}" vs "${d.bl}"
+        return `<div class="text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 averis-shape-sm px-3 py-2">
+          ${FIELD_LABELS[d.field]} variance: "${d.si}" vs "${d.bl}"
         </div>`;
       }).join("");
     } else {
-      deltaWrap.innerHTML = `<div class="text-xs mono text-emerald-700 bg-emerald-50 border border-emerald-200 averis-shape-sm px-3 py-2">All 7 mandatory trade fields match — clean approval.</div>`;
+      deltaWrap.innerHTML = `<div class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 averis-shape-sm px-3 py-2">All 7 mandatory trade fields match — clean approval.</div>`;
     }
 
     drawerOverlay.classList.remove("pointer-events-none");
@@ -751,27 +755,26 @@
     const i2 = document.getElementById("stepIcon2");
     const i3 = document.getElementById("stepIcon3");
 
-    // Reset icons
     i1.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[#D97824]"></i>';
-    i2.innerHTML = '<i class="fa-solid fa-circle text-[8px] text-zinc-300"></i>';
-    i3.innerHTML = '<i class="fa-solid fa-circle text-[8px] text-zinc-300"></i>';
+    i2.innerHTML = '<i class="fa-solid fa-circle text-[7px] text-zinc-300"></i>';
+    i3.innerHTML = '<i class="fa-solid fa-circle text-[7px] text-zinc-300"></i>';
     p2.className = "flex items-center justify-between text-zinc-400";
     p3.className = "flex items-center justify-between text-zinc-400";
 
     setTimeout(()=>{
-      i1.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
+      i1.innerHTML = '<i class="fa-solid fa-check text-emerald-600 font-bold"></i>';
       p2.className = "flex items-center justify-between text-zinc-800 font-semibold";
       i2.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[#D97824]"></i>';
     }, 450);
 
     setTimeout(()=>{
-      i2.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
+      i2.innerHTML = '<i class="fa-solid fa-check text-emerald-600 font-bold"></i>';
       p3.className = "flex items-center justify-between text-zinc-800 font-semibold";
       i3.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-[#D97824]"></i>';
     }, 850);
 
     setTimeout(()=>{
-      i3.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
+      i3.innerHTML = '<i class="fa-solid fa-check text-emerald-600 font-bold"></i>';
       setTimeout(onDone, 200);
     }, 1250);
   }
