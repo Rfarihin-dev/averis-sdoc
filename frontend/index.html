@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="flex items-center gap-4">
-        <button onclick="openModal()" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all">
+        <button onclick="openModal()" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-all cursor-pointer">
           <i class="fa-solid fa-plus"></i> Audit New Document
         </button>
         <span id="connBadge" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
@@ -109,7 +109,6 @@
     </section>
   </main>
 
-  <!-- Interactive Document Audit Modal -->
   <div id="auditModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5">
       <div class="flex items-center justify-between border-b border-slate-800 pb-4">
@@ -122,7 +121,6 @@
         <button onclick="closeModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
       </div>
 
-      <!-- Quick Preset Selector for instant demoing -->
       <div class="space-y-2">
         <label class="text-xs text-slate-400 font-medium">Quick Production Test Scenarios:</label>
         <div class="grid grid-cols-2 gap-2">
@@ -162,7 +160,6 @@
         </div>
       </div>
 
-      <!-- Execution progress visualizer -->
       <div id="execLog" class="hidden p-3 rounded-lg bg-slate-950 border border-slate-800 text-[11px] font-mono space-y-1 text-slate-400">
         <div id="logStep1"><i class="fa-solid fa-spinner fa-spin text-emerald-400"></i> Parsing multi-format attachments (PDF/DOCX)...</div>
         <div id="logStep2" class="hidden"><i class="fa-solid fa-spinner fa-spin text-emerald-400"></i> Normalizing logistics entities & units (MT -> KG)...</div>
@@ -321,7 +318,6 @@
       }).join('');
     }
 
-    // Modal & Interactive Simulation Mechanics
     function openModal() {
       setScenario('weight');
       document.getElementById('auditModal').classList.remove('hidden');
@@ -367,13 +363,8 @@
       s2.classList.add('hidden');
       s3.classList.add('hidden');
 
-      setTimeout(() => {
-        s2.classList.remove('hidden');
-      }, 500);
-
-      setTimeout(() => {
-        s3.classList.remove('hidden');
-      }, 1000);
+      setTimeout(() => { s2.classList.remove('hidden'); }, 400);
+      setTimeout(() => { s3.classList.remove('hidden'); }, 800);
 
       setTimeout(() => {
         const nextId = document.getElementById('modalEmailId').value;
@@ -396,18 +387,16 @@
           newRecord.review_reason = 'unreadable';
         }
 
-        // Prepend directly to local record store
         allRecords.unshift(newRecord);
         renderDashboard();
 
-        // Background write to Supabase if authenticated
         try {
           const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
           client.table('sdoc_records').insert([newRecord]).then();
         } catch (err) {}
 
         closeModal();
-      }, 1600);
+      }, 1300);
     }
 
     document.getElementById('searchInput').addEventListener('input', renderTable);
